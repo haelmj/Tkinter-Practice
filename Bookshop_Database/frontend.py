@@ -11,7 +11,7 @@ User can:
 -Close
 """
 from tkinter import *
-import backend
+from backend import *
 
 window = Tk()
 # create labels at the top
