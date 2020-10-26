@@ -28,23 +28,35 @@ l4 = Label(window, text='ISBN')
 l4.grid(row=1, column=2)
 
 # create entries
-e1_value=StringVar()
-e1 = Entry(window, textvariable=e1_value)
+title_text=StringVar()
+e1 = Entry(window, textvariable=title_text)
 e1.grid(row=0, column=1)
 
-e2_value=StringVar()
-e2 = Entry(window, textvariable=e2_value)
+year_text=StringVar()
+e2 = Entry(window, textvariable=year_text)
 e2.grid(row=1, column=1)
 
-e3_value=StringVar()
-e3 = Entry(window, textvariable=e3_value)
+author_text=StringVar()
+e3 = Entry(window, textvariable=author_text)
 e3.grid(row=0, column=3)
 
-e4_value=StringVar()
-e4 = Entry(window, textvariable=e4_value)
+isbn_text=StringVar()
+e4 = Entry(window, textvariable=isbn_text)
 e4.grid(row=1, column=3)
 
-#create buttons
+# list box
+list1=Listbox(window, height=7, width=35)
+list1.grid(row=2, column=0, rowspan=6, columnspan=2)
+
+# scroll bar
+sb1=Scrollbar(window)
+sb1.grid(row=2, column=2, rowspan=6)
+
+# link scrollbar to list box
+list1.configure(yscrollcommand=sb1.set)
+sb1.configure(command=list1.yview)
+
+# buttons
 b1 = Button(window, text='View all')
 b1.grid(row=2, column=3)
 
@@ -62,4 +74,5 @@ b5.grid(row=6, column=3)
 
 b6 = Button(window, text='Close')
 b6.grid(row=7, column=3)
+
 window.mainloop()
