@@ -11,6 +11,7 @@ User can:
 -Close
 """
 from tkinter import *
+import backend
 
 window = Tk()
 # create labels at the top
@@ -45,7 +46,7 @@ e4 = Entry(window, textvariable=isbn_text)
 e4.grid(row=1, column=3)
 
 # list box
-list1=Listbox(window, height=7, width=35)
+list1=Listbox(window, height=6, width=35)
 list1.grid(row=2, column=0, rowspan=6, columnspan=2)
 
 # scroll bar
