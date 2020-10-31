@@ -1,0 +1,15 @@
+# virtual environments
+venv/
+
+# system generated files
+.vscode/
+__pycache__/
+
+# executable build files
+build/
+
+# all spec files
+*.spec
+
+# text database
+books.db
