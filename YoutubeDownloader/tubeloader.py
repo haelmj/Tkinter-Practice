@@ -47,13 +47,18 @@ class PlaceholderEntry(ttk.Entry):
 
 
 def download_video():
-    yt = YouTube(yt_link.get())
-    if file_path.get():
-        yt.streams.first().download(file_path.get())
-    else:
-        entry2.delete(0, END)
-        entry2.insert(0, DEFAULT_PATH)
-        yt.streams.first().download(DEFAULT_PATH)
+    try:
+        yt = YouTube(yt_link.get())
+        if file_path.get():
+            folder_path = file_path.get()
+        else:
+            entry2.delete(0, END)
+            entry2.insert(0, DEFAULT_PATH)
+            folder_path = DEFAULT_PATH
+        yt.streams.first().download(folder_path)
+        entry_reset()
+    except Exception:
+        print('Could not get video!')
 
 def browse_folder():
     try:
@@ -63,6 +68,9 @@ def browse_folder():
     except Exception:
         entry2.delete(0, END)
         entry2.insert(0, DEFAULT_PATH)
+
+def entry_reset():
+    entry.delete(0, END)
 
 
 style = ttk.Style(window)
