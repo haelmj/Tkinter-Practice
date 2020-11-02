@@ -38,13 +38,22 @@ class PlaceholderEntry(ttk.Entry):
             self.insert("0", self.placeholder)
             self["style"] = "Placeholder.TEntry"
 
+# function to create new folders to store playlist videos
+def make_folder(path, name):
+    os.chdir('path')
+    os.mkdir('name')
+    folder_name = os.path.join(path, name)
+    return folder_name
+
 # monitor file download progress and display the percent
 def progress_check(chunk, file_handle, bytes_remaining):
     percent = (100*(file_size - bytes_remaining))/file_size
     print("{:00.0f}% downloaded".format(percent))
+        
 
 # clear the entry box for youtube link
 def entry_reset(stream, file_handle):
+    show_info('Download Complete', 'Your video has been successfully downloaded')
     entry.delete(0, END)
 
 # set download location, check for download_type, download video(s)
@@ -56,22 +65,26 @@ def download_video():
         entry2.delete(0, END)
         entry2.insert(0, DEFAULT_PATH)
         folder_path = DEFAULT_PATH
+        show_warning('Destination Path', 'No destination folder specified! Using default Downloads folder...')
     if download_type.get() == 1:
         try:
             video = YouTube(yt_link.get(), on_progress_callback=progress_check,on_complete_callback=entry_reset)
             video_stream = video.streams.first()
             file_size = video_stream.filesize
             video_stream.download(folder_path)
-        except Exception as e:
-            print(e)
+        except:
+            show_error('Error', "I ran into some issues! Let's try that again...")
     elif download_type.get() == 2:
         try:
             video = Playlist(yt_link.get())
-            video.download_all(folder_path)
+            playlist_name = video.title()
+            new_folder_path = make_folder(folder_path, playlist_name)
+            video.download_all(new_folder_path)
             entry_reset(stream=None, file_handle=None)
         except:
-            print(e)
+            show_error('Error', "I ran into some issues! Let's try that again...")
 
+# show open window; insert directory into entry box
 def browse_folder():
     try:
         folder_path = askdirectory()
