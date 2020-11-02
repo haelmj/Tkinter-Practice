@@ -40,8 +40,8 @@ class PlaceholderEntry(ttk.Entry):
 
 # function to create new folders to store playlist videos
 def make_folder(path, name):
-    os.chdir('path')
-    os.mkdir('name')
+    os.chdir(path)
+    os.mkdir(name)
     folder_name = os.path.join(path, name)
     return folder_name
 
@@ -81,8 +81,8 @@ def download_video():
             new_folder_path = make_folder(folder_path, playlist_name)
             video.download_all(new_folder_path)
             entry_reset(stream=None, file_handle=None)
-        except:
-            show_error('Error', "I ran into some issues! Let's try that again...")
+        except Exception as e:
+            show_error('Error', f"{e}")
 
 # show open window; insert directory into entry box
 def browse_folder():
