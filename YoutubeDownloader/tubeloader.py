@@ -15,7 +15,7 @@ DEFAULT_PATH = os.path.join( os.getenv('USERPROFILE'), 'Downloads')
 window = Tk()
 # set up the title and size
 window.wm_title('YouTube Downloader') 
-window.geometry('400x170')  
+window.geometry('415x170')  
 window.resizable(width=True, height=True)
 
 # top = Frame(window, width=500, height=50)
@@ -87,8 +87,16 @@ yt_link = StringVar()
 entry = PlaceholderEntry(window, "Youtube Link", textvariable=yt_link, width=50)
 entry.grid(row=2, column=2, columnspan=4, padx=5, pady=5)
 
+download_type = IntVar()
+rd_btn = Radiobutton(window, text='Video', padx=20, variable=download_type, value=1)
+rd_btn.grid(row=3, column=2)
+
+rd_btn2 = Radiobutton(window, text='Playlist', padx=20, variable=download_type, value=2)
+rd_btn2.grid(row=3, column=3)
+
+
 l1 = Label(window, text='----------')
-l1.grid(row=3, column =2, columnspan=4)
+l1.grid(row=4, column =2, columnspan=4)
 
 file_path = StringVar()
 entry2 = PlaceholderEntry(window, "Destination Path", textvariable=file_path, width=50)
