@@ -3,7 +3,7 @@ Simple GUI YouTube Downloader
 
 """
 
-from pytube import YouTube
+from pytube import YouTube, Playlist
 from tkinter import ttk
 from tkinter import *
 from tkinter.filedialog import askdirectory
@@ -54,20 +54,28 @@ def entry_reset(stream, file_handle):
     entry.delete(0, END)
 
 def download_video():
-    try:
-        video = YouTube(yt_link.get(), on_progress_callback=progress_check,on_complete_callback=entry_reset)
-        if file_path.get():
-            folder_path = file_path.get()
-        else:
-            entry2.delete(0, END)
-            entry2.insert(0, DEFAULT_PATH)
-            folder_path = DEFAULT_PATH
-        video_stream = video.streams.first()
-        global file_size
-        file_size = video_stream.filesize
-        video_stream.download(folder_path)
-    except Exception as e:
-        print(e)
+    global file_size
+    if file_path.get():
+        folder_path = file_path.get()
+    else:
+        entry2.delete(0, END)
+        entry2.insert(0, DEFAULT_PATH)
+        folder_path = DEFAULT_PATH
+    if download_type.get() == 1:
+        try:
+            video = YouTube(yt_link.get(), on_progress_callback=progress_check,on_complete_callback=entry_reset)
+            video_stream = video.streams.first()
+            file_size = video_stream.filesize
+            video_stream.download(folder_path)
+        except Exception as e:
+            print(e)
+    elif download_type.get() == 2:
+        try:
+            video = Playlist(yt_link.get())
+            video.download_all(folder_path)
+            entry_reset(stream=None, file_handle=None)
+        except:
+            print(e)
 
 def browse_folder():
     try:
@@ -88,6 +96,7 @@ entry = PlaceholderEntry(window, "Youtube Link", textvariable=yt_link, width=50)
 entry.grid(row=2, column=2, columnspan=4, padx=5, pady=5)
 
 download_type = IntVar()
+download_type.set(1)
 rd_btn = Radiobutton(window, text='Video', padx=20, variable=download_type, value=1)
 rd_btn.grid(row=3, column=2)
 
