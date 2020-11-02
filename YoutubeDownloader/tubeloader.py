@@ -111,7 +111,6 @@ rd_btn.grid(row=3, column=2)
 rd_btn2 = Radiobutton(window, text='Playlist', padx=20, variable=download_type, value=2)
 rd_btn2.grid(row=3, column=3)
 
-
 l1 = Label(window, text='----------')
 l1.grid(row=4, column =2, columnspan=4)
 
