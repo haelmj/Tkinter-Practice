@@ -45,20 +45,29 @@ class PlaceholderEntry(ttk.Entry):
             self.insert("0", self.placeholder)
             self["style"] = "Placeholder.TEntry"
 
+def progress_check(chunk, file_handle, bytes_remaining):
+    # get percentage of file downloaded
+    percent = (100*(file_size - bytes_remaining))/file_size
+    print("{:00.0f}% downloaded".format(percent))
+
+def entry_reset(stream, file_handle):
+    entry.delete(0, END)
 
 def download_video():
     try:
-        yt = YouTube(yt_link.get())
+        video = YouTube(yt_link.get(), on_progress_callback=progress_check,on_complete_callback=entry_reset)
         if file_path.get():
             folder_path = file_path.get()
         else:
             entry2.delete(0, END)
             entry2.insert(0, DEFAULT_PATH)
             folder_path = DEFAULT_PATH
-        yt.streams.first().download(folder_path)
-        entry_reset()
-    except Exception:
-        print('Could not get video!')
+        video_stream = video.streams.first()
+        global file_size
+        file_size = video_stream.filesize
+        video_stream.download(folder_path)
+    except Exception as e:
+        print(e)
 
 def browse_folder():
     try:
@@ -69,8 +78,6 @@ def browse_folder():
         entry2.delete(0, END)
         entry2.insert(0, DEFAULT_PATH)
 
-def entry_reset():
-    entry.delete(0, END)
 
 
 style = ttk.Style(window)
