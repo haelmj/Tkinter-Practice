@@ -1,7 +1,9 @@
 # YouDownload
 
-Simple GUI youtube downloader.
+A Simple GUI YouTube downloader for downloading YouTube videos and Playlists.
 
 ## Status
 
-+ In development
+- Application is functional and can currently be used
+- Patches and Bug fixes:
+  - In development

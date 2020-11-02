@@ -1,6 +1,6 @@
 # Tkinter Practice
 
-This repository is home to all my practice apps with tkinter.
+This repository is home to all my practice apps built with tkinter.
 
 ## Navigation
 
