@@ -7,6 +7,7 @@ from pytube import YouTube, Playlist
 from tkinter import ttk
 from tkinter import *
 from tkinter.filedialog import askdirectory
+from assets.popups import *
 import os
 
 # get default download folder path
@@ -18,15 +19,7 @@ window.wm_title('YouTube Downloader')
 window.geometry('415x170')  
 window.resizable(width=True, height=True)
 
-# top = Frame(window, width=500, height=50)
-# top.pack(side=TOP)
-# bottom = Frame(window, width=500, height=50)
-# bottom.pack(side=BOTTOM)
-# left = Frame(window,  width=300, height=100)
-# left.pack(side=LEFT)
-# right = Frame(window, width=50, height=100)
-# right.pack(side=RIGHT)
-
+# setup placeholder entry class to allow for placeholder value
 class PlaceholderEntry(ttk.Entry):
     def __init__(self, container, placeholder, *args, **kwargs):
         super().__init__(container, *args, style="Placeholder.TEntry", **kwargs)
@@ -45,14 +38,16 @@ class PlaceholderEntry(ttk.Entry):
             self.insert("0", self.placeholder)
             self["style"] = "Placeholder.TEntry"
 
+# monitor file download progress and display the percent
 def progress_check(chunk, file_handle, bytes_remaining):
-    # get percentage of file downloaded
     percent = (100*(file_size - bytes_remaining))/file_size
     print("{:00.0f}% downloaded".format(percent))
 
+# clear the entry box for youtube link
 def entry_reset(stream, file_handle):
     entry.delete(0, END)
 
+# set download location, check for download_type, download video(s)
 def download_video():
     global file_size
     if file_path.get():
