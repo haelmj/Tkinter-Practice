@@ -48,8 +48,8 @@ def make_folder(path, name):
 
 # monitor file download progress and display the percent
 def progress_check(chunk, file_handle, bytes_remaining):
-    percent = (100*(file_size - bytes_remaining))/file_size
-    print("{:00.0f}% downloaded".format(percent))
+    percent = int((100*(file_size - bytes_remaining))/file_size)
+    bar['value'] = percent
         
 
 # clear the entry box for youtube link
@@ -134,6 +134,6 @@ b1 = Button(window, text='Browse Folder', command=browse_folder)
 b1.grid(row=5, column=6)
 
 bar = ttk.Progressbar(window, orient=HORIZONTAL, length= 300, mode='determinate')
-bar.grid(row=6, column = 1, columnspan = 4)
+bar.grid(row=6, column = 1, columnspan=4, padx= 5, pady=20)
 
 window.mainloop()
