@@ -8,6 +8,7 @@ from tkinter import ttk
 from tkinter import *
 from tkinter.filedialog import askdirectory
 from assets.popups import *
+from threading import Thread
 import os
 
 # get default download folder path
@@ -57,32 +58,40 @@ def entry_reset(stream, file_handle):
     entry.delete(0, END)
 
 # set download location, check for download_type, download video(s)
-def download_video():
-    global file_size
-    if file_path.get():
-        folder_path = file_path.get()
-    else:
-        entry2.delete(0, END)
-        entry2.insert(0, DEFAULT_PATH)
-        folder_path = DEFAULT_PATH
-        show_warning('Destination Path', 'No destination folder specified! Using default Downloads folder...')
-    if download_type.get() == 1:
-        try:
-            video = YouTube(yt_link.get(), on_progress_callback=progress_check,on_complete_callback=entry_reset)
-            video_stream = video.streams.first()
-            file_size = video_stream.filesize
-            video_stream.download(folder_path)
-        except:
-            show_error('Error', "I ran into some issues! Let's try that again...")
-    elif download_type.get() == 2:
-        try:
-            video = Playlist(yt_link.get())
-            playlist_name = video.title()
-            new_folder_path = make_folder(folder_path, playlist_name)
-            video.download_all(new_folder_path)
-            entry_reset(stream=None, file_handle=None)
-        except Exception as e:
-            show_error('Error', f"{e}")
+# create download thread
+class DownloadThread(Thread):
+    def run(self):
+        show_info('Download', 'Your download is in progress')
+        global file_size
+        if file_path.get():
+            folder_path = file_path.get()
+        else:
+            entry2.delete(0, END)
+            entry2.insert(0, DEFAULT_PATH)
+            folder_path = DEFAULT_PATH
+            show_warning('Destination Path', 'No destination folder specified! Using default Downloads folder...')
+        if download_type.get() == 1:
+            try:
+                video = YouTube(yt_link.get(), on_progress_callback=progress_check,on_complete_callback=entry_reset)
+                video_stream = video.streams.first()
+                file_size = video_stream.filesize
+                video_stream.download(folder_path)
+            except:
+                show_error('Error', "I ran into some issues! Let's try that again...")
+        elif download_type.get() == 2:
+            try:
+                video = Playlist(yt_link.get())
+                playlist_name = video.title()
+                new_folder_path = make_folder(folder_path, playlist_name)
+                video.download_all(new_folder_path)
+                entry_reset(stream=None, file_handle=None)
+            except Exception as e:
+                show_error('Error', f"{e}")
+
+# start download thread
+def call_download_thread():
+    download = DownloadThread()
+    download.start()
 
 # show open window; insert directory into entry box
 def browse_folder():
@@ -118,7 +127,7 @@ file_path = StringVar()
 entry2 = PlaceholderEntry(window, "Destination Path", textvariable=file_path, width=50)
 entry2.grid(row=5, column=2, columnspan=4)
 
-b2 = Button(window, text='Download', width=12, command= download_video)
+b2 = Button(window, text='Download', width=12, command= call_download_thread)
 b2.grid(row=2, column=6, pady=5)
 
 b1 = Button(window, text='Browse Folder', command=browse_folder)
