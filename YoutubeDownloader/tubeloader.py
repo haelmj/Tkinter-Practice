@@ -55,6 +55,7 @@ def progress_check(chunk, file_handle, bytes_remaining):
 # clear the entry box for youtube link
 def entry_reset(stream, file_handle):
     show_info('Download Complete', 'Your video has been successfully downloaded')
+    bar['value'] = 0
     entry.delete(0, END)
 
 # set download location, check for download_type, download video(s)
