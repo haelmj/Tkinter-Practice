@@ -125,12 +125,15 @@ l1.grid(row=4, column =2, columnspan=4)
 
 file_path = StringVar()
 entry2 = PlaceholderEntry(window, "Destination Path", textvariable=file_path, width=50)
-entry2.grid(row=5, column=2, columnspan=4)
+entry2.grid(row=5, column=2, columnspan=4, pady=10)
 
 b2 = Button(window, text='Download', width=12, command= call_download_thread)
 b2.grid(row=2, column=6, pady=5)
 
 b1 = Button(window, text='Browse Folder', command=browse_folder)
 b1.grid(row=5, column=6)
+
+bar = ttk.Progressbar(window, orient=HORIZONTAL, length= 300, mode='determinate')
+bar.grid(row=6, column = 1, columnspan = 4)
 
 window.mainloop()
