@@ -4,7 +4,7 @@ Simple GUI YouTube Downloader
 """
 
 from pytube import YouTube, Playlist
-from pytube.exceptions import VideoUnavailable, VideoPrivate
+from pytube.exceptions import VideoUnavailable
 from tkinter import ttk
 from tkinter import *
 from tkinter.filedialog import askdirectory
@@ -88,12 +88,12 @@ class DownloadThread(Thread):
                 for video in my_playlist.videos:
                     try:
                         video.register_on_progress_callback(progress_check)
-                        video.streams.first().download(new_folder_path)
-                    except VideoPrivate:
+                        video_stream = video.streams.first()
+                        file_size = video_stream.filesize
+                        video_stream.download(new_folder_path)
+                    except VideoUnavailable:
                         continue
                 entry_reset(stream=None, file_handle=None)
-            except VideoPrivate, VideoUnavailable:
-                continue
             except Exception as e:
                 show_error('Error', f"{e}")
 
